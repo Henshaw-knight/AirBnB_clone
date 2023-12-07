@@ -6,9 +6,12 @@ import uuid
 
 class BaseModel:
     """Class that defines all common attibutes/methods for other classes"""
-    def __init__(self):
+    def __init__(self, *args, **kwargs):
         """Initializes instances of the class with
         id, created_at and updated_at attributes when created
+        Args:
+            args (list/tuple): for any number of positional arguments
+            kwargs (dict): for any number of keyword arguments
         Attrs:
             id (str): unique identifier for instances of the class
             created_at (datetime): the current datetime when an instance
@@ -16,9 +19,19 @@ class BaseModel:
             updated_at (datetime): the current datetime when an instance is
             created and when changes are made to it
         """
-        self.id = str(uuid.uuid4())
-        self.created_at = datetime.now()
-        self.updated_at = datetime.now()
+        if kwargs is not None and len(kwargs) > 0:
+            for key, value in kwargs.items():
+                if key != "__class__":
+                    if key == "created_at" or key == "updated_at":
+                        setattr(self, key, datetime.strptime(
+                            value, "%Y-%m-%dT%H:%M:%S.%f")
+                        )
+                    else:
+                        setattr(self, key, value)
+        else:
+            self.id = str(uuid.uuid4())
+            self.created_at = datetime.now()
+            self.updated_at = datetime.now()
 
     def __str__(self):
         """Defines the string representation of the class instance"""
