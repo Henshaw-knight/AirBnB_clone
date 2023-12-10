@@ -5,6 +5,7 @@ of the instances of BaseModel class in using json format
 for the project"""
 
 import json
+import models
 from models.base_model import BaseModel
 from models.user import User
 from models.city import City
@@ -60,9 +61,11 @@ class FileStorage():
         try:
             with open(FileStorage.__file_path) as fd:
                 objdict = json.load(fd)
-                for o in objdict.values():
-                    cls_name = o["__class__"]
-                    del o["__class__"]
-                    self.new(eval(cls_name)(**o))
+            for key, value in objdict.items():
+                cls_name = value["__class__"]
+                del value["__class__"]
+                if cls_name in models.class_dict:
+                    cls_name_found = models.class_dict[cls_name]
+                    self.__objects[key] = cls_name_found(**value)
         except FileNotFoundError:
             pass
