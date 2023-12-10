@@ -7,6 +7,5 @@ from models.base_model import BaseModel
 class City(BaseModel):
     """The city class which is for making cities objects"""
 
-
     state_id = ""
     name = ""
