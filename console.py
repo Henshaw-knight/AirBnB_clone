@@ -12,7 +12,7 @@ from models import storage
 
 import json
 
-"""The entry point of the whole 
+"""The entry point of the whole
 program(a command interpreter)
 """
 
@@ -22,7 +22,8 @@ class HBNBCommand(cmd.Cmd):
     The entry point of the project
     """
     prompt = "(hbnb) "
-    CLASSNAME = ["BaseModel", "User", "State", "City", "Place", "Review", "Amenity"]
+    CLASSNAME = ["BaseModel", "User", "State", "City",
+                 "Place", "Review", "Amenity"]
 
     def do_EOF(self, line) -> bool:
         """Function to exit the interpreter gracefully"""
@@ -45,7 +46,7 @@ class HBNBCommand(cmd.Cmd):
     def do_create(self, arg=None) -> None:
         """This command is for creating object
 
-        The Object can be BaseModel, 
+        The Object can be BaseModel,
 
         Args:
             arg (str): The name of the object
@@ -67,7 +68,7 @@ class HBNBCommand(cmd.Cmd):
         The instance can be instance of any objects out of
         BaseModel, User, State, City, Place.
 
-        To use the command :- 
+        To use the command :-
         show <classname> <instance_id>
         """
         arg = arg.split(" ")
@@ -91,7 +92,7 @@ class HBNBCommand(cmd.Cmd):
         The instance can be instance of any objects out of
         BaseModel, User, State, City, Place.
 
-        To use the command :- 
+        To use the command :-
         destroy <classname> <instance_id>
         """
         arg = arg.split(" ")
@@ -111,9 +112,11 @@ class HBNBCommand(cmd.Cmd):
                 storage.save()
 
     def do_all(self, arg) -> None:
-        """Return all the string representation of all instance base on the classname"""
+        """Return all the string representation of all
+        instance base on the classname
+        """
 
-        # to do 
+        # to do
         if arg not in HBNBCommand.CLASSNAME and False:
             print("** class doesn't exist **")
         else:
@@ -125,13 +128,14 @@ class HBNBCommand(cmd.Cmd):
             print(list_obj)
 
     def do_update(self, arg) -> None:
-        """This command is for updating instance by adding or updating an attribute
+        """This command is for updating instance by adding or updating
+        an attribute
 
         The instance can be instance of any objects out of
-        BaseModel, User, State, City, Place. Also the attribute to update or add
-        will must be provided
+        BaseModel, User, State, City, Place. Also the attribute to update
+        or add will must be provided
 
-        To use the command :- 
+        To use the command :-
         update <class name> <id> <attribute name> "<attribute value>"
         """
         arg = arg.split(" ")
@@ -145,7 +149,7 @@ class HBNBCommand(cmd.Cmd):
             all_objects = storage.all()
             bm = ".".join([arg[0], arg[1]])
             if bm not in all_objects:
-                #print(bm)
+                # print(bm)
                 print("** no instance found **")
             else:
                 if len(arg) == 2:
@@ -161,15 +165,15 @@ class HBNBCommand(cmd.Cmd):
 
     def default(self, line):
         """Handle command like <classname>.all(), <classname>.count()
-        
+"
         <class name>.update(<id>, <attribute name>, <attribute value>)
         <class name>.update(<id>, <dictionary representation>).
         """
 
-        if "." not in line and "(" not in line  and ")" not in line:
+        if "." not in line and "(" not in line and ")" not in line:
             super().default(line)
             return
-        a = re.match("([A-Z][a-zA-Z]+)\.([a-z]+)\((.*)\)", line)
+        a = re.match(r"([A-Z][a-zA-Z]+)\.([a-z]+)\((.*)\)", line)
         if not a:
             super().default(line)
             return
@@ -194,18 +198,21 @@ class HBNBCommand(cmd.Cmd):
                 self.do_show(group_1 + ' ' + group_3.replace('"', ''))
                 return
             elif group_2 == "destroy":
-                self.do_destroy(group_1 +  ' ' + group_3.replace('"', ''))
+                self.do_destroy(group_1 + ' ' + group_3.replace('"', ''))
                 return
             elif group_2 == "update":
                 if "{" in group_3:
-                     dict_arg = re.search("(\{.*\})", group_3)
-                     dict_arg = json.loads(dict_arg.group(1).replace("'", '"'))
-                     id_arg = group_3.replace(',', '').replace('"', '').split(" ")[0]
-                     for key, value in dict_arg.items():
-                        self.do_update(group_1 + " " + id_arg + " " + key + " " + str(value))
-                     return
+                    dict_arg = re.search(r"(\{.*\})", group_3)
+                    dict_arg = json.loads(dict_arg.group(1).replace("'", '"'))
+                    id_arg = group_3.replace(',', '').replace('"', '').split(
+                            " ")[0]
+                    for key, value in dict_arg.items():
+                        self.do_update(group_1 + " " + id_arg + " " +
+                                       key + " " + str(value))
+                    return
                 else:
-                    string = group_1 + " " + group_3.replace('"', '').replace(',', '')
+                    string = group_1 + " " + group_3.replace('"', '').replace(
+                            ',', '')
                     self.do_update(string)
                     return
         else:
