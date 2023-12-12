@@ -69,3 +69,13 @@ class FileStorage():
                     self.__objects[key] = cls_name_found(**value)
         except FileNotFoundError:
             pass
+
+    # custom helper methods
+
+    @property
+    def file_path(self):
+        return self.__file_path
+
+    @property
+    def objects(self):
+        return self.__objects
