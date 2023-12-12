@@ -116,7 +116,7 @@ class HBNBCommand(cmd.Cmd):
         """
 
         # to do
-        if arg not in HBNBCommand.CLASSNAME and False:
+        if arg not in HBNBCommand.CLASSNAME or False:
             print("** class doesn't exist **")
         else:
             list_obj = []
