@@ -1,4 +1,7 @@
 #!/usr/bin/python3
+"""The entry point of the whole
+program (a command interpreter)
+"""
 import cmd
 import re
 from models.base_model import BaseModel
@@ -11,10 +14,6 @@ from models.place import Place
 from models import storage
 
 import json
-
-"""The entry point of the whole
-program(a command interpreter)
-"""
 
 
 class HBNBCommand(cmd.Cmd):
@@ -124,7 +123,7 @@ class HBNBCommand(cmd.Cmd):
             all_objects = storage.all()
             for key in all_objects:
                 if arg in key:
-                    list_obj.append(all_objects[key])
+                    list_obj.append(str(all_objects[key]))
             print(list_obj)
 
     def do_update(self, arg) -> None:
