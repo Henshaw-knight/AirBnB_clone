@@ -55,6 +55,21 @@ class TestBaseModel(unittest.TestCase):
         self.assertIsInstance(latest_time, datetime)
         self.assertIsInstance(initial_time, datetime)
 
+    def test_to_dict(self):
+        """ to_dict method test/check """
+        new_obj = BaseModel()
+        expected_dict = new_obj.__dict__
+        returned_dict = new_obj.to_dict()
+        date_format = "%Y-%m-%dT%H:%M:%S.%f"
+
+        self.assertEqual(expected_dict["created_at"], datetime.strptime(
+            returned_dict["created_at"], date_format))
+        self.assertEqual(expected_dict["updated_at"], datetime.strptime(
+            returned_dict["updated_at"], date_format))
+        self.assertTrue("__class__" in returned_dict)
+        self.assertTrue(type(returned_dict["created_at"]) is str)
+        self.assertTrue(type(returned_dict["updated_at"]) is str)
+
 
 if __name__ == '__main__':
     unittest.main()
